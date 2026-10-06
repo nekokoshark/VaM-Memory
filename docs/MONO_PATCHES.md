@@ -1,6 +1,6 @@
 # mono.dll 补丁链
 
-VaM 1.22.0.12 自带 `Mono/EmbedRuntime/mono.dll`（原版 SHA256 `160f224ead92…`）上的四层累积二进制补丁。当前部署版 SHA256 `16AAF4BD…`。
+VaM 1.22.0.13 自带 `Mono/EmbedRuntime/mono.dll`（原版 SHA256 `160f224ead92…`）上的五层累积二进制补丁。当前部署版 SHA256 `B7C1F56D…`。
 
 ## 链
 
@@ -10,6 +10,7 @@ VaM 1.22.0.12 自带 `Mono/EmbedRuntime/mono.dll`（原版 SHA256 `160f224ead92�
 | 2 | mono_allocator_lifecycle | `cd7ab354`→`d89ccf26` | GC 收尾排序可回收小页入 pending 链（较密优先、kind2/3 保持）；原空块合并前移；普通退提交大空块仅提交所需前缀；扩堆小请求按需求/可复用容量+≤2MiB seed；256MiB 整块提交储备沿用。**注意**：首版 F3F46BBA 因 4096 区段表超限在游戏中报致命错，已回退后重发 D89CCF26（撤销按空闲总量缩扩堆、恢复 speculative/fallback 参数、不扩区段表） |
 | 3 | mono_warm_pages | `d89ccf26`→`1c023c25` | 64KiB 小页温区：保留大请求精确前缀、原扩堆/4096 区段/256MiB 储备；真实 Mono 对照小页提交约 174731→10931、方法中位 9968→850ms（仅 helper 级） |
 | 4 | mono_reclaim_cohorts | `1c023c25`→`16aaf4bd` | `order_reclaim` 全局准入改独立 kind/size 校验；page_bound=registered heap/4096；原标记/对象身份/TLS/锁/黑名单/原扩堆/4096 区段上限/温区/256MiB 储备全保持 |
+| 5 | mono_free_span_lifecycle | `16aaf4bd`→`b7c1f56d` | whole-free merge 从独立大小决策改为储备感知合并；native 混合映射/冷态字段变更，前 43 个控制器字保持，追加 8 计数器；收集器/对象/地址/内容/TLS/锁/黑名单/OOM/原生扩堆/4096 区段上限/温区/256MiB 储备全保持 |
 
 `mono_reclaim_controller`（`cd7ab354`→`85db66a5`）是并行候选，**不在**部署链内。
 
