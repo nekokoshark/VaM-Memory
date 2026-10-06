@@ -1,0 +1,141 @@
+Mono free-block retirement: validated, persistently installed after user-confirmed game exit, snapshot verified.
+Changed field: nativeAgeThreshold 6 -> 1; strict original predicate and all other code unchanged.
+RVA 0x15FCC7 instruction 8d41fa -> 8d41ff; file offset 0x15F0C9 fa -> ff; changedBytes=1.
+Original SHA256=160f224ead92dac4f33e91a584fdc1c7ef82ed1ced2feac9a903afa31a7e2738
+Modified SHA256=cd7ab354a43faf18479c3a2d1f57d2d068769b8a490338942f6c510e8b02242d
+MODIFIED_FILE: F:\vam1.22.0.12\工作区\mono_retire_fast_20261004\MODIFIED_FILE.dll
+DIFF_FILE: F:\vam1.22.0.12\工作区\mono_retire_fast_20261004\DIFF_FILE.patch
+VERIFICATION: F:\vam1.22.0.12\工作区\mono_retire_fast_20261004\VERIFICATION.txt
+ROLLBACK: F:\vam1.22.0.12\工作区\mono_retire_fast_20261004\ROLLBACK.sh
+
+Shared test input: 32 MiB live, including 8 MiB pinned; 512 MiB temporary arrays.
+Every 4096-byte page sentinel is written/checked. Temporary frames exit on joined threads.
+Idle: 12 explicit test GCs then reuse; quick: 6 repeats of 3 GCs then immediate 512 MiB reuse.
+Concurrent: 4 workers x 32 allocations, mixed sizes, alongside 16 collections in the TEST process.
+Baseline/modified: 3 fresh-process repeats per scenario. Rollback: one repeat per scenario.
+All test gameCalls=0/gameWrites=0; active VaM was not collected, unloaded, trimmed, restarted or patched.
+
+BASELINE
+CWD: F:\vam1.22.0.12\工作区\mono_retire_fast_20261004
+ENV: {"PYTHON_BIN": "C:\\Users\\Administrator\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe", "PYTHONIOENCODING": "utf-8", "PYTHONPATH": "F:\\vam1.22.0.12\\tools\\pydeps"}
+COMMAND: C:\Users\Administrator\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe test_suite.py baseline
+INPUT: BASELINE
+STDOUT (literal):
+RUNTIME_TEST_PASS mode=baseline scenarios=3 repeats=3 firstLargeReturn=8 livePinnedReuse=verified concurrent=verified gameCalls=0 gameWrites=0
+STDERR (literal):
+
+EXIT STATUS: 0
+
+MODIFIED
+CWD: F:\vam1.22.0.12\工作区\mono_retire_fast_20261004
+ENV: {"PYTHON_BIN": "C:\\Users\\Administrator\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe", "PYTHONIOENCODING": "utf-8", "PYTHONPATH": "F:\\vam1.22.0.12\\tools\\pydeps"}
+COMMAND: C:\Users\Administrator\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe test_suite.py modified
+INPUT: MODIFIED
+STDOUT (literal):
+RUNTIME_TEST_PASS mode=modified scenarios=3 repeats=3 firstLargeReturn=3 livePinnedReuse=verified concurrent=verified gameCalls=0 gameWrites=0
+STDERR (literal):
+
+EXIT STATUS: 0
+
+ROLLBACK
+CWD: F:\vam1.22.0.12\工作区\mono_retire_fast_20261004
+ENV: {"PYTHON_BIN": "C:\\Users\\Administrator\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe", "PYTHONIOENCODING": "utf-8", "PYTHONPATH": "F:\\vam1.22.0.12\\tools\\pydeps"}
+COMMAND: "C:\Program Files\Git\bin\bash.exe" --noprofile --norc -c "chmod +x ./ROLLBACK.sh && test -x ./ROLLBACK.sh && ./ROLLBACK.sh"
+INPUT: ROLLBACK
+STDOUT (literal):
+ROLLBACK_HASH_PASS original=restored candidate=retained
+RUNTIME_TEST_PASS mode=rollback scenarios=3 repeats=1 firstLargeReturn=8 livePinnedReuse=verified concurrent=verified gameCalls=0 gameWrites=0
+STDERR (literal):
+
+EXIT STATUS: 0
+
+ZERO_CONTROL
+CWD: F:\vam1.22.0.12\工作区\mono_retire_fast_20261004
+ENV: {"PYTHON_BIN": "C:\\Users\\Administrator\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe", "PYTHONIOENCODING": "utf-8", "PYTHONPATH": "F:\\vam1.22.0.12\\tools\\pydeps"}
+COMMAND: C:\Users\Administrator\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe test_suite.py zero
+INPUT: ZERO_CONTROL
+STDOUT (literal):
+RUNTIME_TEST_PASS mode=zero scenarios=1 repeats=1 firstLargeReturn=none livePinnedReuse=verified concurrent=not-run gameCalls=0 gameWrites=0
+STDERR (literal):
+
+EXIT STATUS: 0
+
+SUPPORT
+CWD: F:\vam1.22.0.12\工作区\mono_retire_fast_20261004
+ENV: {"PYTHON_BIN": "C:\\Users\\Administrator\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe", "PYTHONIOENCODING": "utf-8", "PYTHONPATH": "F:\\vam1.22.0.12\\tools\\pydeps"}
+COMMAND: C:\Users\Administrator\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe test_support.py
+INPUT: SUPPORT
+STDOUT (literal):
+SUPPORT_TEST_PASS tests=17 failures=0 originalAndModified=bound zero=blocked installRestore=verified lockedAndUnknown=rejected
+STDERR (literal):
+
+EXIT STATUS: 0
+
+LEGACY_PROBE
+CWD: F:\vam1.22.0.12\工作区\mono_retire_fast_20261004
+ENV: {"PYTHON_BIN": "C:\\Users\\Administrator\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe", "PYTHONIOENCODING": "utf-8", "PYTHONPATH": "F:\\vam1.22.0.12\\tools\\pydeps"}
+COMMAND: C:\Users\Administrator\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe ../mono_unmap_20260930/test_probe.py MODIFIED
+INPUT: LEGACY_PROBE
+STDOUT (literal):
+MODIFIED_PASS tests=18 namedExports=806 source=MODIFIED_FILE.py
+STDERR (literal):
+
+EXIT STATUS: 0
+
+STARTUP_PROBE
+CWD: F:\vam1.22.0.12\工作区\mono_retire_fast_20261004
+ENV: {"PYTHON_BIN": "C:\\Users\\Administrator\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe", "PYTHONIOENCODING": "utf-8", "PYTHONPATH": "F:\\vam1.22.0.12\\tools\\pydeps"}
+COMMAND: C:\Users\Administrator\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe startup_probe.py
+INPUT: STARTUP_PROBE
+STDOUT (literal):
+STARTUP_PROBE_PASS checks=16 threshold=1 runtimeSignaturesAndAccessors=verified gameCalls=0 gameWrites=0
+STDERR (literal):
+
+EXIT STATUS: 0
+
+LIVE_GUARD
+CWD: F:\vam1.22.0.12\工作区\mono_retire_fast_20261004
+ENV: {"PYTHON_BIN": "C:\\Users\\Administrator\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe", "PYTHONIOENCODING": "utf-8", "PYTHONPATH": "F:\\vam1.22.0.12\\tools\\pydeps"}
+COMMAND: C:\Users\Administrator\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe test_live_guard.py
+INPUT: LIVE_GUARD
+STDOUT (literal):
+LIVE_GUARD_PASS gameRunning=True diskUnchanged=True runtimeModified=False
+STDERR (literal):
+
+EXIT STATUS: 0
+
+CURRENT_VAM
+CWD: F:\vam1.22.0.12\工作区\mono_retire_fast_20261004
+ENV: {"PYTHON_BIN": "C:\\Users\\Administrator\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe", "PYTHONIOENCODING": "utf-8", "PYTHONPATH": "F:\\vam1.22.0.12\\tools\\pydeps"}
+COMMAND: C:\Users\Administrator\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe ../mono_unmap_20260930/MODIFIED_FILE.py --live --pid 61704 --samples 1 --interval 0 --counters-only --output CURRENT_VAM.json
+INPUT: CURRENT_VAM
+STDOUT (literal):
+SAMPLE n=1 gc=112 heapMiB=16884.69 freeMiB=5205.20 unmappedMiB=69.44 committedFreeMiB=5135.75 consistent=True
+LIVE_PASS samples=1 writes=0 callsIntoGame=0 output=CURRENT_VAM.json
+STDERR (literal):
+
+EXIT STATUS: 0
+
+RESTORED STATUS: rollback_copy/mono.dll has original SHA256 and returns on test GC8 again.
+MODIFIED_FILE.dll remains changed with the verified modified SHA256.
+Exact per-case input hashes and subprocess outputs: *_RUN.json; per-GC byte counters: *_IDLE_*.json.
+Zero threshold alone is rejected: the original cutoff16 < gc_count guard prevents early retirement.
+The positive minimum 1 preserves that guard; this is not immediate retirement or a timer.
+Measured test-process results: [{"mode": "baseline", "idleReturns": [{"privateDropBytes": 1073815552, "unmappedIncreaseBytes": 1073815552, "workingSetDropBytes": 537133056, "fullGcMs": 27.124100015498698}, {"privateDropBytes": 1057038336, "unmappedIncreaseBytes": 1057038336, "workingSetDropBytes": 528740352, "fullGcMs": 26.36370004620403}, {"privateDropBytes": 1073815552, "unmappedIncreaseBytes": 1073815552, "workingSetDropBytes": 537133056, "fullGcMs": 28.54019997175783}], "firstLargeReturnCycle": 8, "quickReuseSamples": 18, "quickReuseMedianMs": 15.73019998613745, "quickReuseMaxMs": 16.649199998937547, "quickReuseMinMs": 14.252000022679567, "cases": 9}, {"mode": "modified", "idleReturns": [{"privateDropBytes": 805511168, "unmappedIncreaseBytes": 805511168, "workingSetDropBytes": 537128960, "fullGcMs": 26.808899943716824}, {"privateDropBytes": 805511168, "unmappedIncreaseBytes": 805511168, "workingSetDropBytes": 537128960, "fullGcMs": 26.25400002580136}, {"privateDropBytes": 805511168, "unmappedIncreaseBytes": 805511168, "workingSetDropBytes": 537128960, "fullGcMs": 30.06439993623644}], "firstLargeReturnCycle": 3, "quickReuseSamples": 18, "quickReuseMedianMs": 120.34120003227144, "quickReuseMaxMs": 128.39660001918674, "quickReuseMinMs": 113.86169993784279, "cases": 9}, {"mode": "rollback", "idleReturns": [{"privateDropBytes": 1057038336, "unmappedIncreaseBytes": 1057038336, "workingSetDropBytes": 528740352, "fullGcMs": 25.77569999266416}], "firstLargeReturnCycle": 8, "quickReuseSamples": 6, "quickReuseMedianMs": 15.328250010497868, "quickReuseMaxMs": 17.136000096797943, "quickReuseMinMs": 14.263099990785122, "cases": 3}]
+DEPLOYMENT (observed): {"utc": "2026-10-04T07:14:16.8038095Z", "state": "disk-installed-snapshot-verified", "mode": "Install", "helperPID": 3164, "target": "F:\\vam1.22.0.12\\Mono\\EmbedRuntime\\mono.dll", "source": "F:\\vam1.22.0.12\\工作区\\mono_retire_fast_20261004\\MODIFIED_FILE.dll", "desiredSHA256": "cd7ab354a43faf18479c3a2d1f57d2d068769b8a490338942f6c510e8b02242d", "diskSHA256": "cd7ab354a43faf18479c3a2d1f57d2d068769b8a490338942f6c510e8b02242d", "gameProcesses": [], "testCopy": false, "reason": "", "changedField": "native free-block age threshold 6 -> 1", "runtimeModified": false, "forcedGameGC": false, "gameRestarted": false, "measuredVaMSavingsBytes": null}
+HISTORICAL PENDING REGISTRATION: helperPID=68108; alive at registration=True
+POST-EXIT INSTALL COMMAND: powershell.exe -NoProfile -ExecutionPolicy Bypass -File F:\vam1.22.0.12\工作区\mono_retire_fast_20261004\install.ps1
+POST-EXIT INSTALL INPUT: User confirmed VaM exit; install age threshold 1
+POST-EXIT INSTALL STDOUT (literal):
+SNAPSHOT PASS: 115 files copied and hash-verified; game files read-only
+INSTALL_PASS mode=Install testCopy=False sha256=cd7ab354a43faf18479c3a2d1f57d2d068769b8a490338942f6c510e8b02242d runtimeModified=False
+POST-EXIT INSTALL STDERR (literal):
+
+POST-EXIT INSTALL EXIT STATUS: 0
+Earlier partial installation and corrected snapshot-path decoding: INSTALL_FIRST_RUN.json; native hash changed once, then resumed idempotently.
+Persistent installation source: MODIFIED_FILE.dll; native installed path: F:\vam1.22.0.12\Mono\EmbedRuntime\mono.dll
+Installed restoration, after game exit: powershell.exe -NoProfile -ExecutionPolicy Bypass -File install.ps1 -Mode Restore -Wait
+If still pending, stop only the installer after matching PENDING_VERIFY helperPID and helperStartUTC; the game original remains intact.
+Activation: run the binary-bound sampler against the NEW VaM PID, checking nativeAgeThreshold=1 and runtime signature equality.
+measuredVaMSavingsBytes=null; test results are not VaM savings, VR acceptance, or a performance guarantee.
+ROLLBACK EXECUTABLE CHECK: test -x ./ROLLBACK.sh; exitStatus=0

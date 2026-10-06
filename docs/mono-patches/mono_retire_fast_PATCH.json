@@ -1,0 +1,18 @@
+{
+  "original": "F:\\vam1.22.0.12\\Mono\\EmbedRuntime\\mono.dll",
+  "originalSHA256": "160f224ead92dac4f33e91a584fdc1c7ef82ed1ced2feac9a903afa31a7e2738",
+  "modifiedSHA256": "cd7ab354a43faf18479c3a2d1f57d2d068769b8a490338942f6c510e8b02242d",
+  "zeroControlSHA256": "e5ca9d4484d346fc0a7dfd38c34fab34ec10276e8c4c441f341c087d2151a5a8",
+  "rva": "0x15fcc7",
+  "fileOffset": "0x15f0c9",
+  "beforeBytes": "8d41fa",
+  "afterBytes": "8d41ff",
+  "changedBytes": 1,
+  "nativeAgeThresholdBefore": 6,
+  "nativeAgeThresholdAfter": 1,
+  "zeroThresholdRejected": "cutoff16 < gc_count guard blocks retirement before counter wrap",
+  "deploymentStatus": "disk-installed-snapshot-verified",
+  "measuredVaMSavingsBytes": null,
+  "installationProcessPID": 3164,
+  "deploymentMechanism": "verified disk displacement byte, after natural game exit; no live patch"
+}
